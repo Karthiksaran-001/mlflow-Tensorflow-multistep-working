@@ -1,0 +1,9 @@
+### dependency
+tqdm
+pandas
+numpy
+PyYAML
+mlflow
+joblib
+### local packages -
+-e . # << uncomment this to install from setup.py
