@@ -4,6 +4,8 @@ pandas
 numpy
 PyYAML
 mlflow
+torch 
+torchvision
 joblib
 ### local packages -
 -e . # << uncomment this to install from setup.py
