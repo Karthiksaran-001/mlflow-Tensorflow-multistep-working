@@ -1,6 +1,3 @@
-![](https://socialify.git.ci/c17hawke/AIOps-mlflow-pytorch-multistep-workflow/image?description=1&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Dark)
-
-
 # AIOps-mlflow-pytorch-multistep-workflow
 AIOps-mlflow-pytorch-multistep-workflow
 
