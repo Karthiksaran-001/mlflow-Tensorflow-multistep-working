@@ -5,15 +5,11 @@ from tqdm import tqdm
 import logging
 from src.utils.common import read_yaml, create_directories
 import random
-import torch
 import os 
-import numpy as np
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.optim.lr_scheduler import StepLR
-from torchvision import datasets, transforms
 import mlflow
-import mlflow.pytorch
+import mlflow.keras
+import pandas as pd
+import pickle
 
 
 STAGE = "Get Data" ## <<< change stage name 
@@ -29,29 +25,21 @@ logging.basicConfig(
 def main(config_path):
     ## read config files
     config = read_yaml(config_path)
+    data_path = config["source_data_dirs"]["data"]
+    bool_data = os.path.exists(data_path)
+    if  bool_data:
+        logging.info("File Present in the given path : " + data_path)
+    else:
+        logging.error("File is Missing in the path : " + data_path)
 
-    device_config = {"DEVICE" : 'cuda' if torch.cuda.is_available() else 'cpu'}
-    config.update(device_config)
-    logging.info("Device is : " + config["DEVICE"])
-
-
-    if config["DEVICE"] == "cuda":
-        cuda_kwargs = {"num_workers": 1, "pin_memory": True, "shuffle": True}
-        train_kwargs.update(cuda_kwargs)
-        test_kwargs.update(cuda_kwargs)
-
-    train_kwargs = {"batch_size": config["params"]["BATCH_SIZE"]}
-    test_kwargs = {"batch_size": config["params"]["TEST_BATCH_SIZE"]}
-    transform = transforms.Compose([transforms.ToTensor()])
-    
-    train = datasets.MNIST(config["source_data_dirs"]["data"], train=True, download=True, transform=transform)
-    test = datasets.MNIST(config["source_data_dirs"]["data"], train=False, download=True, transform=transform)
-    
-
-
-    train_loader = torch.utils.data.DataLoader(train, **train_kwargs)
-    test_loader = torch.utils.data.DataLoader(test, **test_kwargs)
-    logging.info("Added Data in the Folder : " + config["source_data_dirs"]["data"])
+    if bool_data:
+        df = pd.read_csv(data_path)
+        row , column = df.shape
+        logging.info(f"Rows : {row} Column : {column}")
+        pck_data = config["artifacts"]["base_data"]
+        with open(pck_data, "wb") as output_file:
+            pickle.dump(df, output_file)
+            logging.info("Added Data in the Folder : " + pck_data)
 
 
 

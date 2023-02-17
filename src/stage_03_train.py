@@ -1,18 +1,12 @@
 import argparse
 import os
-import shutil
-from tqdm import tqdm
 import logging
-from src.utils.common import read_yaml, create_directories
-from src.utils.model_utils import ConvNet, load_binary
-import random
-import torch
-import torch.nn.functional as F
-from torch.optim.lr_scheduler import StepLR
-import mlflow
-import mlflow.pytorch
+from src.utils.common import read_yaml, get_log_path
+from src.stage_02_transform import transform
+from src.utils.model_utils import get_model
+import tensorflow as tf
 
-STAGE = "STAGE_NAME" ## <<< change stage name 
+STAGE = "Training" ## <<< change stage name 
 
 logging.basicConfig(
     filename=os.path.join("logs", 'running_logs.log'), 
@@ -21,55 +15,51 @@ logging.basicConfig(
     filemode="a"
     )
 
-def train_(config, model, device, train_loader, optimizer, epoch):
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        pred = model.forward(data)
-        loss = F.cross_entropy(pred, target)
-        loss.backward()
-        optimizer.step()
-        if batch_idx % config["params"]["LOG_INTERVAL"] == 0:
-            print(f"Train Epoch: {epoch} [{batch_idx * len(data)}/{len(train_loader.dataset)} ({100.0 * batch_idx / len(train_loader):.0f}%)]\tLoss: {loss.item():.6f}")
+def train_(config):
+    config = read_yaml(config)
+    config_path = config["artifacts"]["config_path"]
+    X_train, X_test, y_train, y_test = transform(config=config_path)
+    log_path = config["artifacts"]["callbacks_log"]
+    log_dir = get_log_path(log_path)
+    file_writer = tf.summary.create_file_writer(logdir = log_dir)
+    activation_1 = config["params"]["activation_1"]
+    activation_2 = config["params"]["activation_2"]
+    Losses = config["params"]["Losses"]
+    Optimizer = config["params"]["Optimizer"]
+    metrics= config["params"]["Metrics"]
+    model = get_model(activation_1 , activation_2)
+    weights , biases = model.layers[1].get_weights()  ## becozz first hidden layer get 784 input layer weight 
+    logging.info(f"The Weight of the Hidden Layer 1 : {weights.shape}\nThe Biases Of the Hidden Layer 1 : {biases.shape}")
+    model.compile(loss = Losses , optimizer = Optimizer , metrics = metrics)
+    tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    patience = config["params"]["patience"]
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience = patience , restore_best_weights = True)
+    ckpt_path = config["artifacts"]["model_config_dir"]
+    ckpt_cb = tf.keras.callbacks.ModelCheckpoint(ckpt_path , save_best_only=True)
+    CALLBACKS_LIST = [tensorboard_cb, early_stopping_cb, ckpt_cb]
+    X_valid , y_valid = X_test[:20] , y_test[:20]
+    Validation = (X_valid , y_valid)
+    epoch = config["params"]["EPOCHS"]
+    history = model.fit(X_train , 
+                        y_train , epochs =  epoch,
+                        validation_data= Validation ,
+                        callbacks = CALLBACKS_LIST)
+    test_loss , test_accuracy = model.evaluate(X_test , y_test)
+    logging.info(f"Testing Loss : {test_loss} \nTest Accuracy : {test_accuracy}")
+    
 
 
-def main(config_path, params_path):
-    ## read config files
-    config = read_yaml(config_path)
-
-    device_config = {"DEVICE": 'cuda' if torch.cuda.is_available() else 'cpu'}
-    config.update(device_config)
-
-    model = ConvNet().to(config["DEVICE"])
-    scripted_model = torch.jit.script(model)
-    optimizer = torch.optim.Adam(model.parameters(), lr=config["params"]["LR"])
-
-    scheduler = StepLR(optimizer, step_size=1, gamma=config["params"]["GAMMA"])
-
-
-
-    artifacts = config["artifacts"]
-    model_config_dir = os.path.join(artifacts["artifacts_dir"], artifacts["model_config_dir"])
-    train_loader_bin_file = artifacts["train_loader_bin"]
-    train_loader_bin_filepath = os.path.join(model_config_dir, train_loader_bin_file)
-    train_loader = load_binary(train_loader_bin_filepath)
-
-
-    for epoch in range(1, config["params"]["EPOCHS"] + 1):
-        train_(config, scripted_model, config["DEVICE"], train_loader, optimizer, epoch)
-        scheduler.step()
+    
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()
     args.add_argument("--config", "-c", default="configs/config.yaml")
-    args.add_argument("--params", "-p", default="params.yaml")
     parsed_args = args.parse_args()
 
     try:
         logging.info("\n********************")
         logging.info(f">>>>> stage {STAGE} started <<<<<")
-        main(config_path=parsed_args.config, params_path=parsed_args.params)
+        train_(config=parsed_args.config)
         logging.info(f">>>>> stage {STAGE} completed!<<<<<\n")
     except Exception as e:
         logging.exception(e)

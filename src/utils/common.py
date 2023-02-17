@@ -21,3 +21,10 @@ def save_json(path: str, data: dict) -> None:
         json.dump(data, f, indent=4)
 
     logging.info(f"json file saved at: {path}")
+
+def get_log_path(base_log_dir):
+      ## we create a file using our datetime name
+  UniqueName = time.asctime().replace(" ","_").replace(":" , "")
+  log_path = os.path.join(base_log_dir , UniqueName)
+  logging.info(f"Savings log at {log_path}")
+  return log_path

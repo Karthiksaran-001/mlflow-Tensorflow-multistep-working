@@ -11,7 +11,17 @@ entry_points:
             config: {type: str, default: configs/config.yaml}
         command: "python src/stage_01_get_data.py --config={config}"
 
+    transform:
+        parameters:
+            config: {type: str, default: configs/config.yaml}
+        command: "python src/stage_02_transform.py --config={config}"
+
     train:
         parameters:
             config: {type: str, default: configs/config.yaml}
         command: "python src/stage_03_train.py --config={config}" 
+
+    evaluate:
+        parameters:
+            config: {type: str, default: configs/config.yaml}
+        command: "python src/stage_04_evaluate.py --config={config}" 

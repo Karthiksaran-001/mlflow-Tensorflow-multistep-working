@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 ## edit below variables as per your requirements -
-REPO_NAME = "mlflow-pytorch-multistep-working"
+REPO_NAME = "mlflow-Tensorflow-multistep-working"
 AUTHOR_USER_NAME = "Karthik Saran"
 SRC_REPO = "src"
 LIST_OF_REQUIREMENTS = []
@@ -14,7 +14,7 @@ setup(
     name=SRC_REPO,
     version="0.0.1",
     author=AUTHOR_USER_NAME,
-    description="mlflow-pytorch-multistep-workflow",
+    description="mlflow-Tensorflow-multistep-workflow",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",

@@ -1,8 +1,48 @@
-[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: 
+[2023-02-17 22:22:58,131: INFO: stage_01_get_data]: 
 ********************
-[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: >>>>> stage Get Data started <<<<<
-[2023-02-17 14:55:18,636: INFO: common]: yaml file: configs/config.yaml loaded successfully
-[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: Device is : cpu
-[2023-02-17 14:55:38,282: INFO: stage_01_get_data]: Added Data in the Folder : data
-[2023-02-17 14:55:38,290: INFO: stage_01_get_data]: >>>>> stage Get Data completed!<<<<<
+[2023-02-17 22:22:58,131: INFO: stage_01_get_data]: >>>>> stage Get Data started <<<<<
+[2023-02-17 22:22:58,131: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:22:58,131: INFO: stage_01_get_data]: File Present in the given path : data/Churn_Modelling.csv
+[2023-02-17 22:22:58,265: INFO: stage_01_get_data]: Rows : 10000 Column : 14
+[2023-02-17 22:22:58,269: INFO: stage_01_get_data]: Added Data in the Folder : artifacts/data_df.pickle
+[2023-02-17 22:22:58,269: INFO: stage_01_get_data]: >>>>> stage Get Data completed!<<<<<
+
+[2023-02-17 22:23:02,421: INFO: stage_02_transform]: 
+********************
+[2023-02-17 22:23:02,421: INFO: stage_02_transform]: >>>>> stage Transforming started <<<<<
+[2023-02-17 22:23:02,421: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:23:02,442: INFO: stage_02_transform]: Output are : {0, 1}
+[2023-02-17 22:23:02,442: INFO: stage_02_transform]: Scale the Value Successfully
+[2023-02-17 22:23:02,450: INFO: stage_02_transform]: >>>>> stage Transforming completed!<<<<<
+
+[2023-02-17 22:23:10,325: INFO: stage_03_train]: 
+********************
+[2023-02-17 22:23:10,325: INFO: stage_03_train]: >>>>> stage Training started <<<<<
+[2023-02-17 22:23:10,325: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:23:10,325: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:23:10,337: INFO: stage_02_transform]: Output are : {0, 1}
+[2023-02-17 22:23:10,337: INFO: stage_02_transform]: Scale the Value Successfully
+[2023-02-17 22:23:10,345: INFO: common]: Savings log at artifacts/logs/fit\Fri_Feb_17_222310_2023
+[2023-02-17 22:23:10,696: INFO: model_utils]: Model is Defined
+[2023-02-17 22:23:10,705: INFO: stage_03_train]: The Weight of the Hidden Layer 1 : (20, 215)
+The Biases Of the Hidden Layer 1 : (215,)
+[2023-02-17 22:24:07,277: INFO: stage_03_train]: Testing Loss : 0.36928561329841614 
+Test Accuracy : 0.8453333377838135
+[2023-02-17 22:24:07,296: INFO: stage_03_train]: >>>>> stage Training completed!<<<<<
+
+[2023-02-17 22:24:16,674: INFO: stage_04_evaluate]: 
+********************
+[2023-02-17 22:24:16,674: INFO: stage_04_evaluate]: >>>>> stage Training started <<<<<
+[2023-02-17 22:24:16,682: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:24:16,682: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 22:24:16,699: INFO: stage_02_transform]: Output are : {0, 1}
+[2023-02-17 22:24:16,703: INFO: stage_02_transform]: Scale the Value Successfully
+[2023-02-17 22:24:16,907: INFO: stage_04_evaluate]: Start Run MLFLOW
+[2023-02-17 22:24:17,881: WARNING: save]: Found untraced functions such as _update_step_xla while saving (showing 1 of 1). These functions will not be directly callable after loading.
+[2023-02-17 22:24:18,269: INFO: builder_impl]: Assets written to: C:\Users\admin\AppData\Local\Temp\tmpumsnr5f7\model\data\model\assets
+[2023-02-17 22:24:27,178: INFO: dir_util]: creating F:\AIOPS\ML-Flow\mlflow-Tensorflow-multistep-working\mlruns\0\a9d710c453f148068e69fe860ea4e97a\artifacts\model\data
+[2023-02-17 22:24:27,180: INFO: dir_util]: creating F:\AIOPS\ML-Flow\mlflow-Tensorflow-multistep-working\mlruns\0\a9d710c453f148068e69fe860ea4e97a\artifacts\model\data\model
+[2023-02-17 22:24:27,181: INFO: dir_util]: creating F:\AIOPS\ML-Flow\mlflow-Tensorflow-multistep-working\mlruns\0\a9d710c453f148068e69fe860ea4e97a\artifacts\model\data\model\assets
+[2023-02-17 22:24:27,193: INFO: dir_util]: creating F:\AIOPS\ML-Flow\mlflow-Tensorflow-multistep-working\mlruns\0\a9d710c453f148068e69fe860ea4e97a\artifacts\model\data\model\variables
+[2023-02-17 22:24:27,978: INFO: stage_04_evaluate]: >>>>> stage Training completed!<<<<<
 

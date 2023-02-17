@@ -1,22 +1,24 @@
 # It contains all the configs required in the project
 
 artifacts: 
+  base_data: artifacts/data_df.pickle
+  callbacks_log: artifacts/logs/fit
   artifacts_dir: artifacts
-  model_config_dir: model_config
-  test_loader_bin: test_loader.bin
-  train_loader_bin: train_loader.bin
+  model_config_dir: artifacts/model_ckpt.h5
+  config_path: configs/config.yaml
 
 source_data_dirs:
-  data: data
+  data: data/Churn_Modelling.csv
 
 
 params:
-  BATCH_SIZE: 32
+  test_size: 0.15
+  random_state: 22
   TEST_BATCH_SIZE: 1000
-  LR: 0.01
-  GAMMA: 0.7
-  SEED: 42
-  LOG_INTERVAL: 10
-  DRY_RUN: False
-  EPOCHS: 1
-
+  activation_1: relu
+  activation_2: sigmoid
+  Losses: binary_crossentropy
+  Metrics: accuracy
+  Optimizer: adam
+  patience: 25
+  EPOCHS: 200
