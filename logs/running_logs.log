@@ -1,0 +1,8 @@
+[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: 
+********************
+[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: >>>>> stage Get Data started <<<<<
+[2023-02-17 14:55:18,636: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2023-02-17 14:55:18,636: INFO: stage_01_get_data]: Device is : cpu
+[2023-02-17 14:55:38,282: INFO: stage_01_get_data]: Added Data in the Folder : data
+[2023-02-17 14:55:38,290: INFO: stage_01_get_data]: >>>>> stage Get Data completed!<<<<<
+

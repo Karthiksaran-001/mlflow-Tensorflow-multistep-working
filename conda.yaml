@@ -1,4 +1,4 @@
-name: F:\AIOPS\ML-Flow\mlflow-pytorch-multistep-working\env
+name: mlflow-pytorch-multistep-working\env
 channels:
   - defaults
 dependencies:
@@ -63,4 +63,3 @@ dependencies:
       - websocket-client==1.5.1
       - werkzeug==2.2.2
       - zipp==3.13.0
-prefix: F:\AIOPS\ML-Flow\mlflow-pytorch-multistep-working\env
